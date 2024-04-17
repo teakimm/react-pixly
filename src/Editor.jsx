@@ -1,79 +1,95 @@
-import { useEffect, useState } from "react";
-import { createCanvas, loadImage } from "canvas";
+import { useEffect, useRef, useState } from "react";
+import p5 from "p5";
+import miffy from "/miffy.jpeg";
 
-const INITIAL_DATA = {
-  grayscale: 0,
-  sepia: 0,
-  size: 1,
-  border: 0,
-};
+function Editor() {
+  const [options, setOptions] = useState({});
+  const [myp5, setMyp5] = useState();
+  const [image, setImage] = useState();
+  const canvasWrap = useRef();
+  console.log("rendering editor");
 
-function Editor({ imagePath }) {
-  const [formData, setFormData] = useState(INITIAL_DATA);
+  function sketch(p) {
+    let image;
+    let pixels;
 
-  let canvas;
-  let ctx;
+    p.preload = () => {
+      image = p.loadImage(miffy);
+    };
 
-  const test = new Image();
-  test.src = imagePath;
-  test.onload = () => {
-    canvas = createCanvas(test.width, test.height);
-    ctx = canvas.getContext('2d');
-  };
+    p.setup = () => {
+      p.createCanvas(image.width, image.height);
+      p.image(image, 0, 0);
+      p.loadPixels();
+      // if (p.options.filter) {
+      //   console.log('invert')
+      //   p.filter(p[p.options.filter]);
+      // }
+      // console.log(image.pixels);
+    };
 
+    p.draw = () => {
+      if (p.mouseIsPressed) {
+        p.stroke(200, 50, 30);
+        p.strokeWeight(5);
+        p.ellipse(p.mouseX, p.mouseY, 1);
+      }
+    };
 
+    p.mouseClicked = () => {
+      console.log('in mouse clicked');
+      image = p.loadImage(miffy);
+      p.filter(p[p.options.filter]);
+    }
 
-  function handleChange(evt) {
-    const { name, value } = evt.target;
-    setFormData((data) => ({
-      ...data,
-      [name]: value,
-    }));
+    p.onDrag = () => {
+      console.log("in on drag");
+      p.stroke(5, 100, 200);
+      p.point(p.mouseX, p.mouseY);
+    };
   }
 
+  useEffect(function setUpCanvasOnMount() {
+    if (canvasWrap) {
+      console.log("canvaswrap defined");
+      canvasWrap.current.innerHtml = "";
+    }
+    setMyp5(() => {
+      const newp5 = new p5(sketch, "canvas-wrap");
+      newp5.options = options;
+      return newp5;
+    });
+  }, []);
+
+  function grayscale() {
+    console.log("calling grayscale");
+    // setOptions({ filter: "GRAY" });
+    myp5.options = { filter: "GRAY" };
+  }
+
+  function negative() {
+    // setOptions({ filter: "INVERT" });
+    myp5.options = { filter: "INVERT" };
+  }
+
+  function blur() {
+    // setOptions({ filter: "INVERT" });
+    myp5.options = { filter: "BLUR" };
+  }
+
+  function erode() {
+    // setOptions({ filter: "INVERT" });
+    myp5.options = { filter: "DILATE" };
+  }
 
   return (
-    <>
-      <img src={imagePath} alt="" />
-      <form>
-        <label htmlFor="grayscale">Grayscale</label>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          name="grayscale"
-          value={formData.grayscale}
-          onChange={handleChange}
-        />
-        <label htmlFor="sepia">Sepia</label>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          name="sepia"
-          value={formData.sepia}
-          onChange={handleChange}
-        />
-        <label htmlFor="size">Size</label>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          name="size"
-          value={formData.size}
-          onChange={handleChange}
-        />
-        <label htmlFor="border">Border</label>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          name="border"
-          value={formData.border}
-          onChange={handleChange}
-        />
-      </form>
-    </>
+    <div>
+      <div id="canvas-wrap" ref={canvasWrap}></div>
+      <button onClick={grayscale}>Grayscale</button>
+      <button onClick={negative}>Negative</button>
+      <button onClick={blur}>Blur</button>
+      <button onClick={erode}>erode</button>
+    </div>
   );
 }
 
