@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import p5 from "p5";
 import miffy from "/miffy.jpeg";
 
-function Editor() {
+function Editor({ imagePath }) {
   const [options, setOptions] = useState({});
   const [myp5, setMyp5] = useState();
   const [image, setImage] = useState();
@@ -14,7 +14,7 @@ function Editor() {
     let pixels;
 
     p.preload = () => {
-      image = p.loadImage(miffy);
+      image = p.loadImage(imagePath);
     };
 
     p.setup = () => {
@@ -40,7 +40,7 @@ function Editor() {
       console.log('in mouse clicked');
       image = p.loadImage(miffy);
       p.filter(p[p.options.filter]);
-    }
+    };
 
     p.onDrag = () => {
       console.log("in on drag");
@@ -89,6 +89,8 @@ function Editor() {
       <button onClick={negative}>Negative</button>
       <button onClick={blur}>Blur</button>
       <button onClick={erode}>erode</button>
+
+      <button>save</button>
     </div>
   );
 }

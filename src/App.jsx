@@ -15,7 +15,6 @@ function App() {
   const [imagePath, setImagePath] = useState();
 
   function selectImage(data) {
-    console.log(data);
     setImagePath(data);
   }
 
