@@ -14,7 +14,6 @@ class PixlyAPI {
         exif.GPSLongitude.description,
         exif.GPSLongitudeRef.description);
     }
-    console.log(state);
     formData.append('state', state || null);
     formData.append('fileType', exif.FileType?.value || null);
     formData.append('model', exif.Model?.description || exif.LensModel?.description || null);
@@ -23,6 +22,11 @@ class PixlyAPI {
       mode: 'no-cors',
       body: formData
     });
+  }
+
+
+  static async getImages() {
+    const response = await fetch(`${BASE_URL}images`);
   }
 }
 

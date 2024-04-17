@@ -20,6 +20,10 @@ function App() {
     await PixlyAPI.uploadImage(image, tags);
   }
 
+  async function uploadImage(image, urlObject, tags) {
+    await PixlyAPI.uploadImage(image, tags);
+  }
+
   return (
     <div className="App">
       {!imagePath ? (

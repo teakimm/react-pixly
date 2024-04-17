@@ -8,7 +8,6 @@ function Editor({ imagePath }) {
   const [image, setImage] = useState();
   const canvasWrap = useRef();
   console.log("rendering editor");
-
   function sketch(p) {
     let image;
     let pixels;
@@ -47,6 +46,7 @@ function Editor({ imagePath }) {
       p.stroke(5, 100, 200);
       p.point(p.mouseX, p.mouseY);
     };
+
   }
 
   useEffect(function setUpCanvasOnMount() {
@@ -81,6 +81,9 @@ function Editor({ imagePath }) {
     // setOptions({ filter: "INVERT" });
     myp5.options = { filter: "DILATE" };
   }
+
+  let test = myp5.canvas;
+  const dataURL = canvas.toDataURL();
 
   return (
     <div>
