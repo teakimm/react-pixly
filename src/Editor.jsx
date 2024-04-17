@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createCanvas, loadImage } from "canvas";
+
 const INITIAL_DATA = {
   grayscale: 0,
   sepia: 0,
