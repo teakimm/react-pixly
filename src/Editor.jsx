@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { createCanvas, loadImage } from "canvas";
 const INITIAL_DATA = {
   grayscale: 0,
   sepia: 0,
@@ -9,6 +9,18 @@ const INITIAL_DATA = {
 
 function Editor({ imagePath }) {
   const [formData, setFormData] = useState(INITIAL_DATA);
+
+  let canvas;
+  let ctx;
+
+  const test = new Image();
+  test.src = imagePath;
+  test.onload = () => {
+    canvas = createCanvas(test.width, test.height);
+    ctx = canvas.getContext('2d');
+  };
+
+
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -32,7 +44,7 @@ function Editor({ imagePath }) {
           value={formData.grayscale}
           onChange={handleChange}
         />
-      <label htmlFor="sepia">Sepia</label>
+        <label htmlFor="sepia">Sepia</label>
         <input
           type="range"
           min="0"

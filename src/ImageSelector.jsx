@@ -10,10 +10,14 @@ export default function ImageSelector({ selectImage }) {
 
     function handleSubmit(evt) {
         evt.preventDefault();
+        console.log(imagePath[0]);
         const urlObject = URL.createObjectURL(imagePath[0]);
+
+
         selectImage(urlObject);
         // URL.revokeObjectURL(urlObject);
     }
+
 
     return (
         <div>
