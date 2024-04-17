@@ -14,9 +14,10 @@ class PixlyAPI {
         exif.GPSLongitude.description,
         exif.GPSLongitudeRef.description);
     }
-    formData.append('state', state || null);
-    formData.append('fileType', exif.FileType?.value || null);
-    formData.append('model', exif.Model?.description || exif.LensModel?.description || null);
+    if (state) formData.append('state', state);
+    if (exif.FileType?.value) formData.append('fileType', exif.FileType?.value || null);
+    if (exif.Model?.description || exif.LensModel?.description) formData.append('model', exif.Model?.description || exif.LensModel?.description || null);
+    formData.append('name', 'miffy'); //TODO: make this dynamic
     const resp = await fetch(`${BASE_URL}images`, {
       method: 'POST',
       mode: 'no-cors',

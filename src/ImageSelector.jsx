@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ExifReader from "exifreader";
+import { getEXIF } from "./utils";
 
 export default function ImageSelector({ selectImage }) {
     const [imagePath, setImagePath] = useState('');
@@ -11,8 +12,7 @@ export default function ImageSelector({ selectImage }) {
 
     async function handleSubmit(evt) {
         evt.preventDefault();
-        const tags = await ExifReader.load(imagePath);
-        console.log(tags);
+        const tags = await getEXIF(imagePath);
         const urlObject = URL.createObjectURL(imagePath);
 
         selectImage(imagePath, urlObject, tags);

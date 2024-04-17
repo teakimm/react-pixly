@@ -17,10 +17,10 @@ function App() {
 
   async function selectImage(image, urlObject, tags) {
     setImagePath(urlObject);
-    await PixlyAPI.uploadImage(image, tags);
+    // await PixlyAPI.uploadImage(image, tags);
   }
 
-  async function uploadImage(image, urlObject, tags) {
+  async function uploadImage(image, tags) {
     await PixlyAPI.uploadImage(image, tags);
   }
 
@@ -29,7 +29,7 @@ function App() {
       {!imagePath ? (
         <ImageSelector selectImage={selectImage} />
       ) : (
-        <Editor imagePath={imagePath} />
+        <Editor imagePath={imagePath} uploadImage={uploadImage} />
       )}
     </div>
   );

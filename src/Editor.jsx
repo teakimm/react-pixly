@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import p5 from "p5";
 import miffy from "/miffy.jpeg";
+import { dataURItoBlob, getEXIF } from "./utils";
 
-function Editor({ imagePath }) {
+function Editor({ imagePath, uploadImage }) {
   const [options, setOptions] = useState({});
   const [myp5, setMyp5] = useState();
   const [image, setImage] = useState();
@@ -36,9 +37,11 @@ function Editor({ imagePath }) {
     };
 
     p.mouseClicked = () => {
-      console.log('in mouse clicked');
-      image = p.loadImage(miffy);
-      p.filter(p[p.options.filter]);
+      if (p.options.filter) {
+        console.log("in mouse clicked");
+        image = p.loadImage(miffy);
+        p.filter(p[p.options.filter]);
+      }
     };
 
     p.onDrag = () => {
@@ -46,7 +49,6 @@ function Editor({ imagePath }) {
       p.stroke(5, 100, 200);
       p.point(p.mouseX, p.mouseY);
     };
-
   }
 
   useEffect(function setUpCanvasOnMount() {
@@ -82,8 +84,17 @@ function Editor({ imagePath }) {
     myp5.options = { filter: "DILATE" };
   }
 
-  let test = myp5.canvas;
-  const dataURL = canvas.toDataURL();
+  async function upload() {
+    const canvas = document.querySelector('#canvas-wrap canvas');
+    const image = canvas.toDataURL('image/png');
+    const blob = dataURItoBlob(image);
+    const exif = await getEXIF(image);
+    console.log(exif);
+    // const urlObject = URL.createObjectURL(image);
+    // console.log(urlObject);
+    uploadImage(blob, exif);
+  }
+
 
   return (
     <div>
@@ -93,7 +104,7 @@ function Editor({ imagePath }) {
       <button onClick={blur}>Blur</button>
       <button onClick={erode}>erode</button>
 
-      <button>save</button>
+      <button onClick={upload}>Upload</button>
     </div>
   );
 }
