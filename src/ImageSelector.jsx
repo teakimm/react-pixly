@@ -15,8 +15,7 @@ export default function ImageSelector({ selectImage }) {
         console.log(tags);
         const urlObject = URL.createObjectURL(imagePath);
 
-
-        selectImage(urlObject);
+        selectImage(imagePath, urlObject, tags);
     }
 
 

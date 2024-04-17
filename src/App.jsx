@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import { BrowserRouter } from "react-router-dom";
 import ImageSelector from "./ImageSelector";
 import Editor from "./Editor";
+import PixlyAPI from "./api";
 
 /** Component for entire page.
  *
@@ -14,8 +15,9 @@ import Editor from "./Editor";
 function App() {
   const [imagePath, setImagePath] = useState();
 
-  function selectImage(data) {
-    setImagePath(data);
+  async function selectImage(image, urlObject, tags) {
+    setImagePath(urlObject);
+    await PixlyAPI.uploadImage(image, tags);
   }
 
   return (
