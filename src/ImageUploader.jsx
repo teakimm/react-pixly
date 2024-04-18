@@ -14,6 +14,7 @@ function ImageUploader() {
   const [exif, setExif] = useState();
 
   async function selectImage(urlObject, exif) {
+    console.log(exif);
     setImagePath(urlObject);
     setExif(exif);
   }
@@ -22,8 +23,6 @@ function ImageUploader() {
     await PixlyAPI.uploadImage(image, exif, name);
 
   }
-
-
 
   return (
     <div className="ImageUploader">

@@ -6,16 +6,16 @@ class PixlyAPI {
   static async uploadImage(image, exif, name) {
     const formData = new FormData();
     formData.append('image', image); //TODO: i have no idea how this is working but you can name it here, can prob add an input to rename
-    let state;
+    let location;
     if (exif.GPSLatitude) {
-      state = getStateByCoord(
+      location = getStateByCoord(
         exif.GPSLatitude.description,
         exif.GPSLatitudeRef.description,
         exif.GPSLongitude.description,
         exif.GPSLongitudeRef.description);
     }
     formData.append('name', name);
-    if (state) formData.append('state', state);
+    if (location) formData.append('location', location);
     if (exif.FileType?.value) formData.append('fileType', exif.FileType?.value || null);
     if (exif.Model?.description || exif.LensModel?.description) formData.append('model', exif.Model?.description || exif.LensModel?.description || null);
 

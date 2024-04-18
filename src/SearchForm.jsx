@@ -38,8 +38,6 @@ function SearchForm({ handleSearch }) {
     debounceLiveSearch.cancel();
   }
 
-  const formIsValid = Object.values(formData).every((v) => v !== "");
-
   return (
     <div className="SearchForm col-10 my-4">
       <form onSubmit={handleSubmit}>
@@ -52,7 +50,7 @@ function SearchForm({ handleSearch }) {
         >
           <option value="">Filter by Category</option>
           <option value="name">Name</option>
-          <option value="state">State</option>
+          <option value="location">Location</option>
           <option value="model">Camera model</option>
         </select>
         <div>
