@@ -41,20 +41,21 @@ function SearchForm({ handleSearch }) {
   const formIsValid = Object.values(formData).every((v) => v !== "");
 
   return (
-    <div className="SearchForm col-10">
+    <div className="SearchForm col-10 my-4">
       <form onSubmit={handleSubmit}>
         <select
+          className="form-select mb-3 w-25"
           name="category"
           id="searchByCategory"
           onChange={handleChange}
           value={formData.category}
         >
-          <option value="">Select category to filter by</option>
+          <option value="">Filter by Category</option>
           <option value="name">Name</option>
           <option value="state">State</option>
           <option value="model">Camera model</option>
         </select>
-        <div className="input-group">
+        <div>
           <input
             type="text"
             name="searchTerm"
@@ -64,13 +65,7 @@ function SearchForm({ handleSearch }) {
             className="SearchForm-input form-control"
           />
           <label htmlFor="searchByCategory"></label>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={!formIsValid}
-          >
-            <span className="bi bi-search"></span>
-          </button>
+
         </div>
       </form>
     </div>

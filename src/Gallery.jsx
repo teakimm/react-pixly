@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import PixlyAPI from "./api";
 import SearchForm from "./SearchForm";
+import ImageCard from "./ImageCard";
+import "./Gallery.css";
+
 function Gallery() {
   const [images, setImages] = useState([]);
   console.log(images);
@@ -16,11 +19,14 @@ function Gallery() {
     setImages(await PixlyAPI.getImages(query));
   }
   return (
-    <div>
+    <div className="Gallery px-5">
       <SearchForm handleSearch={handleSearch} />
-      {images.map((i) => (
-        <img key={i.id} src={i.url} />
-      ))}
+      <div className="Gallery-container">
+        {images.map((i) => (
+          <ImageCard key={i.id} image={i} />
+        ))}
+      </div>
+
     </div>
   );
 }
