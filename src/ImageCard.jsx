@@ -3,7 +3,7 @@
 
 function ImageCard({ image }) {
     return (
-        <div className="card" style={{ width: "15rem" }}>
+        <div className="card m-3" style={{ width: "15rem" }}>
             <img className="card-img-top" src={image.url} alt={image.name} />
             <div className="card-body">
                 <h5 className="card-title">{image.name}</h5>

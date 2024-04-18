@@ -72,25 +72,26 @@ function Editor({ imagePath, uploadImage }) {
   }
 
   return (
-    <div>
+    <div className="d-flex justify-content-center mt-4">
       <canvas className="canvas" ref={canvasRef} />
-      <div>
-        <label htmlFor="saturation">Saturation:</label>
-        <input type="range" id="saturation" min="0" max="200" value={saturation} onChange={handleSaturationChange} />
-        <label htmlFor="contrast">Contrast:</label>
-        <input type="range" id="contrast" min="0" max="200" value={contrast} onChange={handleContrastChange} />
-        <label htmlFor="sepia">Sepia:</label>
-        <input type="range" id="grayscale" min="0" max="200" value={sepia} onChange={handleSepiaChange} />
-        <label htmlFor="grayscale">Grayscale:</label>
-        <input type="range" id="saturation" min="0" max="200" value={grayscale} onChange={handleGrayscaleChange} />
-        <label htmlFor="hue">Hue:</label>
-        <input type="range" id="hue" min="0" max="200" value={hue} onChange={handleHueChange} />
-        <label htmlFor="brightness">Brightness:</label>
-        <input type="range" id="brightness" min="0" max="200" value={brightness} onChange={handleBrightnessChange} />
+      <div className="p-4" style={{ maxWidth: "30rem" }}>
+        <label className="form-label" htmlFor="saturation">Saturation:</label>
+        <input className="form-range" type="range" id="saturation" min="0" max="200" value={saturation} onChange={handleSaturationChange} />
+        <label className="form-label" htmlFor="contrast">Contrast:</label>
+        <input className="form-range" type="range" id="contrast" min="0" max="200" value={contrast} onChange={handleContrastChange} />
+        <label className="form-label" htmlFor="sepia">Sepia:</label>
+        <input className="form-range" type="range" id="grayscale" min="0" max="200" value={sepia} onChange={handleSepiaChange} />
+        <label className="form-label" htmlFor="grayscale">Grayscale:</label>
+        <input className="form-range" type="range" id="saturation" min="0" max="200" value={grayscale} onChange={handleGrayscaleChange} />
+        <label className="form-label" htmlFor="hue">Hue:</label>
+        <input className="form-range" type="range" id="hue" min="0" max="200" value={hue} onChange={handleHueChange} />
+        <label className="form-label" htmlFor="brightness">Brightness:</label>
+        <input className="form-range" type="range" id="brightness" min="0" max="200" value={brightness} onChange={handleBrightnessChange} />
 
-        <input type="text" id="name" value={name} onChange={handleNameChange} required />
+        <label htmlFor="name">Name your image:</label>
+        <input className="form-control" type="text" id="name" value={name} onChange={handleNameChange} required />
 
-        <button onClick={upload}>Upload</button>
+        <button className="btn btn-primary mt-3" onClick={upload}>Upload</button>
       </div>
     </div>
   );
