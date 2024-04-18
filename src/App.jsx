@@ -14,14 +14,15 @@ import PixlyAPI from "./api";
 
 function App() {
   const [imagePath, setImagePath] = useState();
+  const [exif, setExif] = useState();
 
-  async function selectImage(image, urlObject, tags) {
+  async function selectImage(urlObject, exif) {
     setImagePath(urlObject);
-    // await PixlyAPI.uploadImage(image, tags);
+    setExif(exif);
   }
 
-  async function uploadImage(image, tags) {
-    await PixlyAPI.uploadImage(image, tags);
+  async function uploadImage(image) {
+    await PixlyAPI.uploadImage(image, exif);
   }
 
   return (

@@ -1,17 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import p5 from "p5";
-import miffy from "/miffy.jpeg";
-import { dataURItoBlob, getEXIF } from "./utils";
+import { dataURItoBlob } from "./utils";
 
 function Editor({ imagePath, uploadImage }) {
-  const [options, setOptions] = useState({});
-  const [myp5, setMyp5] = useState();
-  const [image, setImage] = useState();
   const canvasWrap = useRef();
+  const options = useRef({});
   console.log("rendering editor");
+
+
   function sketch(p) {
     let image;
-    let pixels;
 
     p.preload = () => {
       image = p.loadImage(imagePath);
@@ -20,12 +18,6 @@ function Editor({ imagePath, uploadImage }) {
     p.setup = () => {
       p.createCanvas(image.width, image.height);
       p.image(image, 0, 0);
-      p.loadPixels();
-      // if (p.options.filter) {
-      //   console.log('invert')
-      //   p.filter(p[p.options.filter]);
-      // }
-      // console.log(image.pixels);
     };
 
     p.draw = () => {
@@ -36,73 +28,44 @@ function Editor({ imagePath, uploadImage }) {
       }
     };
 
-    p.mouseClicked = () => {
-      if (p.options.filter) {
-        console.log("in mouse clicked");
-        image = p.loadImage(miffy);
-        p.filter(p[p.options.filter]);
+    p.mouseClicked = (evt) => {
+      if (evt.target.className === 'Editor-filter-btn') {
+        p.filter(p[options.filter]);
       }
     };
 
     p.onDrag = () => {
-      console.log("in on drag");
       p.stroke(5, 100, 200);
       p.point(p.mouseX, p.mouseY);
     };
   }
 
   useEffect(function setUpCanvasOnMount() {
+    console.log('in editor use effect')
     if (canvasWrap) {
-      console.log("canvaswrap defined");
       canvasWrap.current.innerHtml = "";
     }
-    setMyp5(() => {
-      const newp5 = new p5(sketch, "canvas-wrap");
-      newp5.options = options;
-      return newp5;
-    });
+    new p5(sketch, "canvas-wrap");
   }, []);
 
-  function grayscale() {
-    console.log("calling grayscale");
-    // setOptions({ filter: "GRAY" });
-    myp5.options = { filter: "GRAY" };
-  }
-
-  function negative() {
-    // setOptions({ filter: "INVERT" });
-    myp5.options = { filter: "INVERT" };
-  }
-
-  function blur() {
-    // setOptions({ filter: "INVERT" });
-    myp5.options = { filter: "BLUR" };
-  }
-
-  function erode() {
-    // setOptions({ filter: "INVERT" });
-    myp5.options = { filter: "DILATE" };
+  function setFilter(filter) {
+    options.filter = filter;
   }
 
   async function upload() {
     const canvas = document.querySelector('#canvas-wrap canvas');
     const image = canvas.toDataURL('image/png');
     const blob = dataURItoBlob(image);
-    const exif = await getEXIF(image);
-    console.log(exif);
-    // const urlObject = URL.createObjectURL(image);
-    // console.log(urlObject);
-    uploadImage(blob, exif);
+    uploadImage(blob);
   }
-
 
   return (
     <div>
-      <div id="canvas-wrap" ref={canvasWrap}></div>
-      <button onClick={grayscale}>Grayscale</button>
-      <button onClick={negative}>Negative</button>
-      <button onClick={blur}>Blur</button>
-      <button onClick={erode}>erode</button>
+      <div id="canvas-wrap" ref={canvasWrap} ></div>
+      <button className="Editor-filter-btn" onClick={() => setFilter('GRAY')}>Grayscale</button>
+      <button className="Editor-filter-btn" onClick={() => setFilter('INVERT')}>Invert</button>
+      <button className="Editor-filter-btn" onClick={() => setFilter('BLUR')}>Blur</button>
+      <button className="Editor-filter-btn" onClick={() => setFilter('BLUR')}>erode</button>
 
       <button onClick={upload}>Upload</button>
     </div>

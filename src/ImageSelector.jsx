@@ -12,10 +12,10 @@ export default function ImageSelector({ selectImage }) {
 
     async function handleSubmit(evt) {
         evt.preventDefault();
-        const tags = await getEXIF(imagePath);
+        const exif = await getEXIF(imagePath);
         const urlObject = URL.createObjectURL(imagePath);
 
-        selectImage(imagePath, urlObject, tags);
+        selectImage(urlObject, exif);
     }
 
 
