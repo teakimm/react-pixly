@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ExifReader from "exifreader";
 import { getEXIF } from "./utils";
 
 export default function ImageSelector({ selectImage }) {
@@ -22,11 +21,11 @@ export default function ImageSelector({ selectImage }) {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="image">Upload Image:</label>
+                <label htmlFor="image">Select Image:</label>
                 <input type="file" id="image" onChange={handleChange} name="image" files={[imagePath]} />
 
 
-                <button>Upload</button>
+                <button>Select</button>
             </form>
         </div>
     );

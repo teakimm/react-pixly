@@ -4,12 +4,14 @@ import { dataURItoBlob } from "./utils";
 
 function Editor({ imagePath, uploadImage }) {
   const canvasWrap = useRef();
-  const options = useRef({});
+  let options = useRef({});
   console.log("rendering editor");
-
 
   function sketch(p) {
     let image;
+    let pixelSizeSlider;
+
+    console.log(p);
 
     p.preload = () => {
       image = p.loadImage(imagePath);
@@ -18,6 +20,7 @@ function Editor({ imagePath, uploadImage }) {
     p.setup = () => {
       p.createCanvas(image.width, image.height);
       p.image(image, 0, 0);
+      pixelSizeSlider = p.createSlider(1, 20, 1);
     };
 
     p.draw = () => {
@@ -31,13 +34,23 @@ function Editor({ imagePath, uploadImage }) {
     p.mouseClicked = (evt) => {
       if (evt.target.className === 'Editor-filter-btn') {
         p.filter(p[options.filter]);
+      } else if (evt.target.id === 'Editor-pixelate-btn') {
+        pixelate();
       }
     };
 
-    p.onDrag = () => {
-      p.stroke(5, 100, 200);
-      p.point(p.mouseX, p.mouseY);
-    };
+    function pixelate() {
+      let pixelSize = pixelSizeSlider.value();
+      p.noStroke();
+      p.loadPixels();
+      for (let i = 0; i < image.width; i+=pixelSize) {
+        for (let j = 0; j < image.height; j+=pixelSize) {
+          const color = image.get(i, j);
+          p.fill(color);
+          p.rect(i, j, pixelSize, pixelSize);
+        }
+      }
+    }
   }
 
   useEffect(function setUpCanvasOnMount() {
@@ -59,6 +72,14 @@ function Editor({ imagePath, uploadImage }) {
     uploadImage(blob);
   }
 
+  function handleChange(evt) {
+    options = {
+      ...options,
+      [evt.target.name]: evt.target.value
+    }
+    console.log(options.pixelSize);
+  }
+
   return (
     <div>
       <div id="canvas-wrap" ref={canvasWrap} ></div>
@@ -66,7 +87,7 @@ function Editor({ imagePath, uploadImage }) {
       <button className="Editor-filter-btn" onClick={() => setFilter('INVERT')}>Invert</button>
       <button className="Editor-filter-btn" onClick={() => setFilter('BLUR')}>Blur</button>
       <button className="Editor-filter-btn" onClick={() => setFilter('BLUR')}>erode</button>
-
+      <button id="Editor-pixelate-btn" >Pixelate</button>
       <button onClick={upload}>Upload</button>
     </div>
   );
