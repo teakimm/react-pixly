@@ -88,7 +88,7 @@ function Editor({ imagePath, uploadImage }) {
         <input type="range" id="brightness" min="0" max="200" value={brightness} onChange={handleBrightnessChange} />
 
 
-        <input type="text" id="name" value={name} onChange={handleNameChange} />
+        <input type="text" id="name" value={name} onChange={handleNameChange} required/>
 
 
         <button onClick={upload}>Upload</button>
