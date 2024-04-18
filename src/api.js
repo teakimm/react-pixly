@@ -27,10 +27,13 @@ class PixlyAPI {
   }
 
 
-  static async getImages() {
+  static async getImages(query = "") {
+    const data = query ? {}
     const response = await fetch(`${BASE_URL}images`);
     return await response.json();
   }
+
+
 }
 
 export default PixlyAPI;

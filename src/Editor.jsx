@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { dataURItoBlob } from "./utils";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Editor({ imagePath, uploadImage }) {
   const canvasRef = useRef(null); //NOTE: apparently useRef needs to be used as manipulating the dom with state will cause issues
@@ -11,6 +12,8 @@ function Editor({ imagePath, uploadImage }) {
   const [hue, setHue] = useState(0);
   const [brightness, setBrightness] = useState(100); //FIXME: can probably put this into a single object, would also be work that i don;t want to do
   const [name, setName] = useState("");
+
+  const navigate = useNavigate("/");
 
 
   const maxWidth = 700;
@@ -33,7 +36,6 @@ function Editor({ imagePath, uploadImage }) {
       let width = image.naturalWidth;
       let height = image.naturalHeight;
 
-
       if (width > maxWidth || height > maxHeight) {
         const aspectRatio = width / height;
         if (width > height) {
@@ -48,7 +50,6 @@ function Editor({ imagePath, uploadImage }) {
       canvas.width = width;
       canvas.height = height;
 
-
       const filterString = `saturate(${saturation}%) contrast(${contrast}%) sepia(${sepia}%) grayscale(${grayscale}%) hue-rotate(${hue}deg) brightness(${brightness}%)`;
       ctx.filter = filterString;
       ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -62,8 +63,8 @@ function Editor({ imagePath, uploadImage }) {
     const image = canvas.toDataURL('image/png');
     const blob = dataURItoBlob(image);
     console.log(blob);
-    uploadImage(blob, name);
-
+    await uploadImage(blob, name);
+    navigate("/");
   }
 
   function handleNameChange(evt) {
@@ -87,9 +88,7 @@ function Editor({ imagePath, uploadImage }) {
         <label htmlFor="brightness">Brightness:</label>
         <input type="range" id="brightness" min="0" max="200" value={brightness} onChange={handleBrightnessChange} />
 
-
-        <input type="text" id="name" value={name} onChange={handleNameChange} required/>
-
+        <input type="text" id="name" value={name} onChange={handleNameChange} required />
 
         <button onClick={upload}>Upload</button>
       </div>

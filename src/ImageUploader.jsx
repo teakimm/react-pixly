@@ -20,7 +20,10 @@ function ImageUploader() {
 
   async function uploadImage(image, name) {
     await PixlyAPI.uploadImage(image, exif, name);
+
   }
+
+
 
   return (
     <div className="ImageUploader">
