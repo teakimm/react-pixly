@@ -21,8 +21,8 @@ function App() {
     setExif(exif);
   }
 
-  async function uploadImage(image) {
-    await PixlyAPI.uploadImage(image, exif);
+  async function uploadImage(image, name) {
+    await PixlyAPI.uploadImage(image, exif, name);
   }
 
   return (
