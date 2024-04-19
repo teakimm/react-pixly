@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/';
 /** PixlyAPI Class */
 class PixlyAPI {
 
-  /** Given data of an image,   */
+  /** Given data of an image, append to FormData obj and send to server.  */
   static async uploadImage(image, exif, name) {
     const formData = new FormData();
     formData.append('image', image);
@@ -33,7 +33,10 @@ class PixlyAPI {
     });
   }
 
-
+  /** Takes object {searchTerm: string, category: string.
+   * If query object passed in, gets all images filtered by query.
+   * If no query object, gets all images.
+   */
   static async getImages({ searchTerm, category } = {}) {
     const params = searchTerm && category ? `?${new URLSearchParams({ searchTerm, category })}` : '';
     const response = await fetch(`${BASE_URL}images${params}`);

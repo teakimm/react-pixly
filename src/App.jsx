@@ -6,6 +6,8 @@ import RouteList from "./RouteList";
  *
  * Props: none
  * State: none
+ *
+ * App -> {NavBar, RouteList}
  */
 
 function App() {

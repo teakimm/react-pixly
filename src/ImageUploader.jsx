@@ -28,7 +28,7 @@ function ImageUploader() {
 
   return (
     <div className="ImageUploader">
-      {!imagePath ? (
+      {!objectUrl ? (
         <ImageSelector selectImage={selectImage} />
       ) : (
         <Editor objectUrl={objectUrl} uploadImage={uploadImage} />

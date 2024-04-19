@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
 
+/** NavBar component.
+ *
+ * props: none
+ *
+ * state: none
+ *
+ * App -> NavBar
+ */
 function NavBar() {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">

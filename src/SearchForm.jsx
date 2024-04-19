@@ -6,6 +6,17 @@ const INITIAL_DATA = {
   category: "",
 };
 
+/** Component for search form.
+ *
+ *  props:
+ * - handleSearch: parent function
+ *
+ * state:
+ * - formData: object like {searchTerm, category}
+ *
+ * Gallery -> SearchForm
+ */
+
 function SearchForm({ handleSearch }) {
   const [formData, setFormData] = useState(INITIAL_DATA);
   console.log("in rendering SearchForm");

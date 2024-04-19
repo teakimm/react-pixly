@@ -33,7 +33,7 @@ function ImageSelector({ selectImage }) {
                 <label htmlFor="image" className="form-label">Select Image:</label>
                 <input type="file" id="image" className="form-control" onChange={handleChange} name="image" files={[imagePath]} />
 
-                <button className="btn btn-secondary mt-3">Select</button>
+                <button className="btn btn-secondary mt-3" disabled={!imagePath}>Select</button>
             </form>
         </div>
     );

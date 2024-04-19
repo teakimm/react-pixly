@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import "./ImageCard.css";
-import moment from "moment";
-
-const TWELVE_HOURS = 43200;
+import { formatTime } from "./utils";
 
 /** Component to render individual image cards
  *
@@ -15,12 +13,7 @@ const TWELVE_HOURS = 43200;
  *
  */
 function ImageCard({ image }) {
-  const timeDiff = (new Date() - new Date(image.uploadedAt)) / 1000;
-  const relTime = moment(image.uploadedAt).fromNow();
-  const time =
-    timeDiff > TWELVE_HOURS
-      ? moment(image.uploadedAt).format("LL")
-      : relTime;
+  const time = formatTime(image.uploadedAt)
 
   return (
     <a
