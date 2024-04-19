@@ -2,13 +2,23 @@ import { Link } from "react-router-dom";
 import "./ImageCard.css";
 import moment from "moment";
 
-const SECONDS_PER_DAY = 43200;
+const TWELVE_HOURS = 43200;
 
+/** Component to render individual image cards
+ *
+ * props:
+ * - image: object like: {url, uploadedAt, location, model, name}
+ *
+ * state: none
+ *
+ * Gallery -> ImageCard
+ *
+ */
 function ImageCard({ image }) {
   const timeDiff = (new Date() - new Date(image.uploadedAt)) / 1000;
   const relTime = moment(image.uploadedAt).fromNow();
   const time =
-    timeDiff > SECONDS_PER_DAY
+    timeDiff > TWELVE_HOURS
       ? moment(image.uploadedAt).format("LL")
       : relTime;
 

@@ -1,8 +1,18 @@
 import { useState } from "react";
 import { getEXIF } from "./utils";
 
-export default function ImageSelector({ selectImage }) {
-    const [imagePath, setImagePath] = useState('');
+/** Component for setting image to edit
+ *
+ * props:
+ * - selectImage: parent function
+ *
+ * state:
+ * - imagePath: file storage object
+ *
+ * ImageUploader -> ImageSelector
+ */
+function ImageSelector({ selectImage }) {
+    const [imagePath, setImagePath] = useState(null);
 
 
     function handleChange(evt) {
@@ -12,11 +22,10 @@ export default function ImageSelector({ selectImage }) {
     async function handleSubmit(evt) {
         evt.preventDefault();
         const exif = await getEXIF(imagePath);
-        const urlObject = URL.createObjectURL(imagePath);
+        const objectUrl = URL.createObjectURL(imagePath);
 
-        selectImage(urlObject, exif);
+        selectImage(objectUrl, exif);
     }
-
 
     return (
         <div>
@@ -24,9 +33,10 @@ export default function ImageSelector({ selectImage }) {
                 <label htmlFor="image" className="form-label">Select Image:</label>
                 <input type="file" id="image" className="form-control" onChange={handleChange} name="image" files={[imagePath]} />
 
-
                 <button className="btn btn-secondary mt-3">Select</button>
             </form>
         </div>
     );
 }
+
+export default ImageSelector;

@@ -4,6 +4,15 @@ import SearchForm from "./SearchForm";
 import ImageCard from "./ImageCard";
 import "./Gallery.css";
 
+/** Component for rendering image
+ *
+ * props: none
+ *
+ * state:
+ * - images: array of images like: [{url, uploadedAt, location, model, name}, ...]
+ *
+ * RoutesList -> Gallery
+ */
 function Gallery() {
   const [images, setImages] = useState([]);
   console.log(images);

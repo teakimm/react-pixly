@@ -3,25 +3,27 @@ import Editor from "./Editor";
 import PixlyAPI from "./api";
 import { useState } from "react";
 
-/** Component for entire page.
+/** Component to handle images being uploaded and edited
  *
  * Props: none
- * State: none
+ * State:
+ * - objectUrl: object to represent an image
+ * - exif: object with exif data of image
+ *
+ *  RoutesList -> ImageUploader
  */
-
 function ImageUploader() {
-  const [imagePath, setImagePath] = useState();
+  const [objectUrl, setObjectUrl] = useState();
   const [exif, setExif] = useState();
 
-  async function selectImage(urlObject, exif) {
+  async function selectImage(objUrl, exif) {
     console.log(exif);
-    setImagePath(urlObject);
+    setObjectUrl(objUrl);
     setExif(exif);
   }
 
   async function uploadImage(image, name) {
     await PixlyAPI.uploadImage(image, exif, name);
-
   }
 
   return (
@@ -29,7 +31,7 @@ function ImageUploader() {
       {!imagePath ? (
         <ImageSelector selectImage={selectImage} />
       ) : (
-        <Editor imagePath={imagePath} uploadImage={uploadImage} />
+        <Editor objectUrl={objectUrl} uploadImage={uploadImage} />
       )}
     </div>
   );
