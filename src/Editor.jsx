@@ -137,7 +137,6 @@ function Editor({ imagePath, uploadImage }) {
           <input type="color" id="color" name="color" onChange={handleColorChange} />
         </div>
 
-
         <label htmlFor="name">Name your image:</label>
         <input className="form-control" type="text" id="name" value={name} onChange={handleNameChange} required />
 
