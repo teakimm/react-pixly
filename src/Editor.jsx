@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import { dataURItoBlob } from "./utils";
+import { dataURItoBlob, resizeImage } from "./utils";
 import { useNavigate } from "react-router-dom";
+
 
 /** Editor component for image
  *
@@ -68,19 +69,8 @@ function Editor({ objectUrl, uploadImage }) {
     const image = new Image();
     image.src = objectUrl;
     image.onload = () => {
-      let width = image.naturalWidth;
-      let height = image.naturalHeight;
 
-      if (width > maxWidth || height > maxHeight) {
-        const aspectRatio = width / height;
-        if (width > height) {
-          width = maxWidth;
-          height = width / aspectRatio;
-        } else {
-          height = maxHeight;
-          width = height * aspectRatio;
-        }
-      }
+      const { width, height } = resizeImage(image.naturalWidth, image.naturalHeight);
 
       canvas.width = width;
       canvas.height = height;

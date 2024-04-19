@@ -26,10 +26,10 @@ async function getEXIF(imagePath) {
 function dataURItoBlob(dataURI) {
   var binary = atob(dataURI.split(',')[1]);
   var array = [];
-  for(var i = 0; i < binary.length; i++) {
-      array.push(binary.charCodeAt(i));
+  for (var i = 0; i < binary.length; i++) {
+    array.push(binary.charCodeAt(i));
   }
-  return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+  return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
 }
 
 /** Takes time string.
@@ -42,8 +42,27 @@ function formatTime(time) {
   const timeDiff = (new Date() - new Date(time)) / 1000;
   const relTime = moment(time).fromNow();
   return timeDiff > twelveHours
-      ? moment(time).format("LL")
-      : relTime;
+    ? moment(time).format("LL")
+    : relTime;
 }
 
-export {getStateByCoord, getEXIF, dataURItoBlob, formatTime}
+/** adjust an images size to have a maximum width/height of 700, and maintain
+ * aspect ratio
+ */
+function resizeImage(width, height) {
+  const maxWidth = 700;
+  const maxHeight = 700;
+  if (width > maxWidth || height > maxHeight) {
+    const aspectRatio = width / height;
+    if (width > height) {
+      width = maxWidth;
+      height = width / aspectRatio;
+    } else {
+      height = maxHeight;
+      width = height * aspectRatio;
+    }
+  }
+  return ({ width, height });
+}
+
+export { getStateByCoord, getEXIF, dataURItoBlob, formatTime, resizeImage };
