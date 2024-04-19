@@ -15,6 +15,7 @@ function Editor({ imagePath, uploadImage }) {
   const [drawing, setDrawing] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [color, setColor] = useState("#000000");
+  const [lineWidth, setLineWidth] = useState("5");
 
   const navigate = useNavigate("/");
 
@@ -29,6 +30,7 @@ function Editor({ imagePath, uploadImage }) {
   const handleGrayscaleChange = (evt) => setGrayscale(evt.target.value);
   const handleHueChange = (evt) => setHue(evt.target.value);
   const handleBrightnessChange = (evt) => setBrightness(evt.target.value);
+  const handleLineWidthChange = (evt) => setLineWidth(evt.target.value);
 
 
   function handleColorChange(evt) {
@@ -87,6 +89,7 @@ function Editor({ imagePath, uploadImage }) {
     setName(evt.target.value);
   }
 
+
   function startDraw(evt) {
     const canvas = canvasRef.current;
     const pos = getMousePosition(canvas, evt);
@@ -103,6 +106,7 @@ function Editor({ imagePath, uploadImage }) {
     ctx.moveTo(coords.x, coords.y);
     ctx.lineTo(pos.x, pos.y);
     ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
     ctx.stroke();
     setCoords(pos);
   }
@@ -131,6 +135,8 @@ function Editor({ imagePath, uploadImage }) {
         <input className="form-range" type="range" id="hue" min="0" max="200" value={hue} onChange={handleHueChange} />
         <label className="form-label" htmlFor="brightness">Brightness:</label>
         <input className="form-range" type="range" id="brightness" min="0" max="200" value={brightness} onChange={handleBrightnessChange} />
+        <label className="form-label" htmlFor="lineWidth">Pen Width:</label>
+        <input className="form-range" type="range" id="lineWidth" min="2" max="30" value={lineWidth} onChange={handleLineWidthChange} />
 
         <div className="d-flex gap-2 my-3">
           <label htmlFor="color">Color:</label>
