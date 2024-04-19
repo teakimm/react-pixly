@@ -12,6 +12,9 @@ function Editor({ imagePath, uploadImage }) {
   const [hue, setHue] = useState(0);
   const [brightness, setBrightness] = useState(100); //FIXME: can probably put this into a single object, would also be work that i don;t want to do
   const [name, setName] = useState("");
+  const [drawing, setDrawing] = useState(false);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [color, setColor] = useState("#000000");
 
   const navigate = useNavigate("/");
 
@@ -20,12 +23,17 @@ function Editor({ imagePath, uploadImage }) {
   const maxHeight = 700;
 
 
-  const handleSaturationChange = (event) => setSaturation(event.target.value);
-  const handleContrastChange = (event) => setContrast(event.target.value);
-  const handleSepiaChange = (event) => setSepia(event.target.value);
-  const handleGrayscaleChange = (event) => setGrayscale(event.target.value);
-  const handleHueChange = (event) => setHue(event.target.value);
-  const handleBrightnessChange = (event) => setBrightness(event.target.value);
+  const handleSaturationChange = (evt) => setSaturation(evt.target.value);
+  const handleContrastChange = (evt) => setContrast(evt.target.value);
+  const handleSepiaChange = (evt) => setSepia(evt.target.value);
+  const handleGrayscaleChange = (evt) => setGrayscale(evt.target.value);
+  const handleHueChange = (evt) => setHue(evt.target.value);
+  const handleBrightnessChange = (evt) => setBrightness(evt.target.value);
+
+
+  function handleColorChange(evt) {
+    setColor(evt.target.value);
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -67,13 +75,49 @@ function Editor({ imagePath, uploadImage }) {
     navigate("/");
   }
 
+  function getMousePosition(canvas, evt) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+  }
+
   function handleNameChange(evt) {
     setName(evt.target.value);
   }
 
+  function startDraw(evt) {
+    const canvas = canvasRef.current;
+    const pos = getMousePosition(canvas, evt);
+    setDrawing(true);
+    setCoords(pos);
+  }
+
+  function draw(evt) {
+    if (!drawing) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const pos = getMousePosition(canvas, evt);
+    ctx.beginPath();
+    ctx.moveTo(coords.x, coords.y);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = color;
+    ctx.stroke();
+    setCoords(pos);
+  }
+
+  function stopDraw(evt) {
+    setDrawing(false);
+  }
+
   return (
     <div className="d-flex justify-content-center mt-4">
-      <canvas className="canvas" ref={canvasRef} />
+      <canvas className="canvas"
+        ref={canvasRef}
+        onMouseDown={startDraw}
+        onMouseMove={draw}
+        onMouseUp={stopDraw} />
       <div className="p-4" style={{ maxWidth: "30rem" }}>
         <label className="form-label" htmlFor="saturation">Saturation:</label>
         <input className="form-range" type="range" id="saturation" min="0" max="200" value={saturation} onChange={handleSaturationChange} />
@@ -87,6 +131,12 @@ function Editor({ imagePath, uploadImage }) {
         <input className="form-range" type="range" id="hue" min="0" max="200" value={hue} onChange={handleHueChange} />
         <label className="form-label" htmlFor="brightness">Brightness:</label>
         <input className="form-range" type="range" id="brightness" min="0" max="200" value={brightness} onChange={handleBrightnessChange} />
+
+        <div className="d-flex gap-2 my-3">
+          <label htmlFor="color">Color:</label>
+          <input type="color" id="color" name="color" onChange={handleColorChange} />
+        </div>
+
 
         <label htmlFor="name">Name your image:</label>
         <input className="form-control" type="text" id="name" value={name} onChange={handleNameChange} required />
